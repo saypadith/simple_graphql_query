@@ -35,7 +35,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     fetchOperation();
     super.initState();
   }
@@ -48,71 +47,82 @@ class _HomePageState extends State<HomePage> {
         title: Text("Simple GraphQL"),
       ),
       body: Container(
-        // child: FutureBuilder<List<BooksModel>>(
-        //     future: BooksProvider.fetAllAds(),
-        //     builder: (context, snapshot) {
-        //       if (snapshot.hasError) {
-        //         return Text("Error Occurred!");
-        //       }
-        //       return snapshot.hasData
-        //           ? Center(
-        //               child: ListView.builder(
-        //                   itemCount: snapshot.data!.length,
-        //                   itemBuilder: (context, idx) {
-        //                     BooksModel item = snapshot.data![idx];
-        //                     return Card(
-        //                         child: Padding(
-        //                       padding: const EdgeInsets.all(8.0),
-        //                       child: Column(
-        //                         children: [
-        //                           Text(item.bookName),
-        //                           Text("Author name: " + item.author),
-        //                           Text("Page no. "+item.pages.toString()),
-        //                         ],
-        //                       ),
-        //                     ));
-        //                     ;
-        //                   }),
-        //             )
-        //           : Center(
-        //               child: CircularProgressIndicator(),
-        //             );
-        //     })
-        // ,
-        child: StreamBuilder<List<BooksModel>>(
-            stream: _getBooks,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Text("Error Occurred!");
-              }
-              return snapshot.hasData
-                  ? _isLoading
-                      ? Center(
-                          child: Text("Loading...."),
-                        )
-                      : Center(
-                          child: ListView.builder(
-                              itemCount: snapshot.data!.length,
-                              itemBuilder: (context, idx) {
-                                BooksModel item = snapshot.data![idx];
-                                return Card(
-                                    child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    children: [
-                                      Text(item.bookName),
-                                      Text("Author name: " + item.author),
-                                      Text("Page no. " + item.pages.toString()),
-                                    ],
-                                  ),
-                                ));
-                                ;
-                              }),
-                        )
-                  : Center(
-                      child: CircularProgressIndicator(),
-                    );
-            }),
+        child: Column(
+          children: [
+            Text("Query"),
+            Expanded(
+              child: FutureBuilder<List<BooksModel>>(
+                  future: BooksProvider.fetAllAds(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text("Error Occurred!");
+                    }
+                    return snapshot.hasData
+                        ? Center(
+                            child: ListView.builder(
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: (context, idx) {
+                                  BooksModel item = snapshot.data![idx];
+                                  return Card(
+                                      child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        Text(item.bookName),
+                                        Text("Author name: " + item.author),
+                                        Text("Page no. " +
+                                            item.pages.toString()),
+                                      ],
+                                    ),
+                                  ));
+                                  ;
+                                }),
+                          )
+                        : Center(
+                            child: CircularProgressIndicator(),
+                          );
+                  }),
+            ),
+            Text("Subscription"),
+            Expanded(
+              child: StreamBuilder<List<BooksModel>>(
+                  stream: _getBooks,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text("Error Occurred!");
+                    }
+                    return snapshot.hasData
+                        ? _isLoading
+                            ? Center(
+                                child: Text("Loading...."),
+                              )
+                            : Center(
+                                child: ListView.builder(
+                                    itemCount: snapshot.data!.length,
+                                    itemBuilder: (context, idx) {
+                                      BooksModel item = snapshot.data![idx];
+                                      return Card(
+                                          child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          children: [
+                                            Text(item.bookName),
+                                            Text("Author name: " + item.author),
+                                            Text("Page no. " +
+                                                item.pages.toString()),
+                                          ],
+                                        ),
+                                      ));
+                                      ;
+                                    }),
+                              )
+                        : Center(
+                            child: CircularProgressIndicator(),
+                          );
+                  }),
+            ),
+          ],
+        ),
       ),
     );
   }

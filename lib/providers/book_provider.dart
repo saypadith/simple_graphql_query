@@ -38,20 +38,9 @@ class BooksProvider {
     //get subscription
     var connector = HasuraHelper.hasuraConn();
     Snapshot snapshot = await connector.subscription(docQuery);
-    // print(snapshot.listen((event) {
-    //   print(event["data"]["books"]);
-    // }));
     return snapshot.map((data) {
   
       return BooksModel.fromJsonList(data["data"]["books"]);
     });
-    
-    // return snapshot;
-    // print(a);
- 
-    // return snapshot.map((data) {
-    //   print(data);
-    //   return BooksModel.fromJsonList(data["data"]["books"] as List);
-    // });
   }
 }
