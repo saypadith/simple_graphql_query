@@ -1,3 +1,4 @@
+import 'package:hasura_connect/hasura_connect.dart';
 import 'package:simple_graphql_query/models/book_model.dart';
 import 'package:simple_graphql_query/utils/hasura_helper.dart';
 
@@ -20,5 +21,37 @@ class BooksProvider {
         .map((value) => BooksModel.fromJson(value))
         .toList();
     return ads;
+  }
+
+  static Future<Snapshot<List<BooksModel>>> subAllBook() async {
+    //document
+    String docQuery = """
+      subscription {
+        books {
+          author
+          book_name
+          pages
+          created_at
+        }
+      }
+    """;
+    //get subscription
+    var connector = HasuraHelper.hasuraConn();
+    Snapshot snapshot = await connector.subscription(docQuery);
+    // print(snapshot.listen((event) {
+    //   print(event["data"]["books"]);
+    // }));
+    return snapshot.map((data) {
+  
+      return BooksModel.fromJsonList(data["data"]["books"]);
+    });
+    
+    // return snapshot;
+    // print(a);
+ 
+    // return snapshot.map((data) {
+    //   print(data);
+    //   return BooksModel.fromJsonList(data["data"]["books"] as List);
+    // });
   }
 }

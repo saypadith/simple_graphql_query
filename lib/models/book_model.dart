@@ -35,4 +35,12 @@ class BooksModel {
         "pages": pages,
         "created_at": createdAt.toIso8601String(),
     };
+
+   
+  static List<BooksModel> fromJsonList(List list) {
+    // if (list == null) return null;
+    return list
+        .map<BooksModel>((item) => BooksModel.fromJson(item))
+        .toList();
+  }
 }
